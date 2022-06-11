@@ -288,7 +288,7 @@ class WxFans_Plugin implements Typecho_Plugin_Interface
                     </script>';
                 $content = str_replace($secret_content[0], $secret_notice, $content);
             } else {
-				$content = str_replace($secret_content[0], '<div style="border:1px dashed #28A745; padding:10px; margin:10px 0; line-height:200%;  background-color:#FFC1071C; overflow:hidden; clear:both;">'.$secret_content[0][0].'</div>', $content);
+				$content = str_replace($secret_content[0], '<div>'.$secret_content[0][0].'</div>', $content);
 				$content = str_replace("&lt;","<", $content);
 				$content = str_replace("&gt;",">", $content);
 			}
