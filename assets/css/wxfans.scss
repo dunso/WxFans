@@ -127,8 +127,8 @@
 
   .cm-grid .cm-row [class*=cm-col] {
     position: relative;
-    padding-left: 15px;
-    padding-right: 15px
+    padding-left: 5px;
+    padding-right: 5px
   }
 
   @media (min-width: 768px) {
@@ -219,5 +219,8 @@
     display: none
   }
 
-  .cm-grid {width: 85%;}
+  .cm-grid {
+    width: 100%;
+    margin-top: -100px
+  }
 }

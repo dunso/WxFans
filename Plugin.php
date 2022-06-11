@@ -254,7 +254,9 @@ class WxFans_Plugin implements Typecho_Plugin_Interface
                     <div class="cm-grid cm-card secret_view">
                         <div class="cm-row">
                             <div class="cm-col-md-4">
-                                <img src="' . $cnwper_weixin_options->mp_qr . '" class="cm-resp-img">
+                                <div style="margin-top: 10px">
+                                    <img src="' . $cnwper_weixin_options->mp_qr . '" class="cm-resp-img">
+                                </div>
                             </div>
                             <div class="cm-col-md-8">
                                 <div class="hide_content_info" style="margin:10px 0">
