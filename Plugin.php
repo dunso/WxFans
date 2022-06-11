@@ -29,8 +29,8 @@ class WxFans_Plugin implements Typecho_Plugin_Interface
      */
     public static function activate()
     {
-        Typecho_Plugin::factory('Widget_Abstract_Contents')->contentEx_600 = array(__CLASS__, 'cnwper_weixin_secret');
-        Typecho_Plugin::factory('Widget_Abstract_Contents')->excerptEx_600 = array(__CLASS__, 'excerptEx');
+        Typecho_Plugin::factory('Widget_Abstract_Contents')->contentEx_1001 = array(__CLASS__, 'cnwper_weixin_secret');
+        Typecho_Plugin::factory('Widget_Abstract_Contents')->excerptEx_1001 = array(__CLASS__, 'excerptEx');
 
         Typecho_Plugin::factory('admin/write-post.php')->bottom = array(__CLASS__, 'render');
         Typecho_Plugin::factory('admin/write-page.php')->bottom = array(__CLASS__, 'render');
@@ -249,7 +249,7 @@ class WxFans_Plugin implements Typecho_Plugin_Interface
             $_cnwper_weixin_cookie = isset($_COOKIE[CNWPER_WEIXIN_COOKIE_NAME]) ? $_COOKIE[CNWPER_WEIXIN_COOKIE_NAME] : '';
             if ($_cnwper_weixin_cookie != $cnwper_weixin_cookie) {
                 $secret_notice = '
-                <link rel="stylesheet" id="pure_css-css"  href="'.$options->siteUrl.'/usr/plugins/WxFans/assets/css/wxfans.min.css" type="text/css"/>
+                <link rel="stylesheet" id="pure_css-css"  href="'.$options->siteUrl.'usr/plugins/WxFans/assets/css/wxfans.min.css" type="text/css"/>
                 <div class="wxfans">
                     <div class="cm-grid cm-card secret_view">
                         <div class="cm-row">
@@ -287,7 +287,11 @@ class WxFans_Plugin implements Typecho_Plugin_Interface
                     });
                     </script>';
                 $content = str_replace($secret_content[0], $secret_notice, $content);
-            }
+            } else {
+				$content = str_replace($secret_content[0], '<div style="border:1px dashed #28A745; padding:10px; margin:10px 0; line-height:200%;  background-color:#FFC1071C; overflow:hidden; clear:both;">'.$secret_content[0][0].'</div>', $content);
+				$content = str_replace("&lt;","<", $content);
+				$content = str_replace("&gt;",">", $content);
+			}
         }
         return $content;
     }
@@ -307,7 +311,7 @@ class WxFans_Plugin implements Typecho_Plugin_Interface
                 $(function() {
                     if($('#wmd-button-row').length>0)$('#wmd-button-row').append('<li class=\"wmd-spacer wmd-spacer1\" id=\"wmd-spacer5\"></li><li class=\"wmd-button\" id=\"wmd-secret-button\" title=\"加密\"><img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABoVBMVEUAAAC9vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb29vb2QpK6QpK68vb29vb29vb29vb28vL27vLy9vb29vb29vb28vb2QpK6QpK60uLq8vL29vb26u7wAN2xMfpe5u7y9vb28vL20uLqQpK6QpK6QpK6QpK6PpK6XqLCerLOTpa+QpK6QpK6Spa+dq7KXqLCPpK6QpK6QpK6QpK6QpK6QpK6QpK6Po66QpK6QpK6QpK6QpK6Po66QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6OoqyYq7QAITiQpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6Jnqlee4pgfYuQpK6QpK6QpK5yi5hgfYtgfYuQpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK6QpK7///+aiJ4ZAAAAinRSTlMAAAAAJWBgJQAAAE7V4eDVTgAAINinKCeh1yAAAAAAU+kwAAAn4lQAAAAAYeAhAAEZ1mEAAAAAE4LO+besrbX1zoITAABT87apra2tram281MAAF/gIQACACHgXwAAX+AfAAVBX+AfAEHuAF/gIQBT87isrbjzABOCrKysrIISAAAAAAMDAwMAAAD0HrYnAAAAAWJLR0SKhWh3dgAAAAd0SU1FB94MChAKAKhkkWAAAADOSURBVBjTY2BgYGBkYmZhZWPnYGJkgABOLm4eXj5+AUFOqICQsIiomLiEpJQ0mCsjKyevoKikrKKqpi4rAxTQ0NTS1tHV0zcwNDI2MQUKmJlbWFpZ29ja2Ts4OjkDBVxc3dw9PL28fXz9/AMCgQJBwSGhYeEREeFhkVHRMUCB2Lj4hMSk5OSkxIT4uFiQQEpqWnpGZmZGelpqCnYBdC1Z2Tm5KIbm5RcUFhUDQVFJKdjasvKKyqpqIKiqqa2rBwo0NDY1t7QCQUtbe0cnAwAYTECfAJIwMQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNi0wOS0xN1QxNToyMToyNSswODowME6zKwsAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTQtMTItMTBUMTY6MTA6MDArMDg6MDD4IEsDAAAATXRFWHRzb2Z0d2FyZQBJbWFnZU1hZ2ljayA3LjAuMS02IFExNiB4ODZfNjQgMjAxNi0wOS0xNyBodHRwOi8vd3d3LmltYWdlbWFnaWNrLm9yZ93ZpU4AAAAYdEVYdFRodW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8AAAAYdEVYdFRodW1iOjpJbWFnZTo6SGVpZ2h0ADEyOEN8QYAAAAAXdEVYdFRodW1iOjpJbWFnZTo6V2lkdGgAMTI40I0R3QAAABl0RVh0VGh1bWI6Ok1pbWV0eXBlAGltYWdlL3BuZz+yVk4AAAAXdEVYdFRodW1iOjpNVGltZQAxNDE4MTk5MDAwaPjnQgAAABJ0RVh0VGh1bWI6OlNpemUAMS4zNUtCy0Y24gAAAF90RVh0VGh1bWI6OlVSSQBmaWxlOi8vL2hvbWUvd3d3cm9vdC9zaXRlL3d3dy5lYXN5aWNvbi5uZXQvY2RuLWltZy5lYXN5aWNvbi5jbi9zcmMvMTE4MjAvMTE4MjAyOC5wbmdgSnSkAAAAAElFTkSuQmCC\"/></li>');	
                     $(document).on('click', '#wmd-secret-button', function() {		
-                        getValue(\"text\", \"{$pluginNodeStart}\n请输入加密内容\n{$pluginNodeEnd}\n\");
+                        getValue(\"text\", \"{$pluginNodeStart}请输入加密内容{$pluginNodeEnd}\");
                     }
                     );
                 });
